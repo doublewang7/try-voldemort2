@@ -1,12 +1,10 @@
 package com.cisco.wap.config;
 
 import com.cisco.wap.exception.VoldemortConfigError;
-import com.google.common.io.Resources;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Objects;
 import java.util.Properties;
 

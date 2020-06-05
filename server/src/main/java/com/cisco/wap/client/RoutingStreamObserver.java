@@ -1,13 +1,10 @@
 package com.cisco.wap.client;
 
-import com.cisco.wap.StoreRequest;
 import com.cisco.wap.StoreResponse;
-import com.google.common.collect.Lists;
 import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 public class RoutingStreamObserver implements StreamObserver<StoreResponse>  {

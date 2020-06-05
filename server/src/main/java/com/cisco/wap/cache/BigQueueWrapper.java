@@ -1,6 +1,5 @@
 package com.cisco.wap.cache;
 
-import com.cisco.wap.config.VoldemortConfig;
 import com.leansoft.bigqueue.BigQueueImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,5 +41,13 @@ public class BigQueueWrapper implements Closeable {
     @Override
     public void close() throws IOException {
         innerQueue.close();
+    }
+
+    public void closeSlience() {
+        try {
+            close();
+        } catch (IOException e) {
+            logger.error(e.getMessage(), e);
+        }
     }
 }

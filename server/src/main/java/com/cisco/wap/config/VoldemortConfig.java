@@ -2,6 +2,7 @@ package com.cisco.wap.config;
 
 import com.cisco.wap.exception.VoldemortConfigError;
 
+import java.io.File;
 import java.util.Properties;
 
 import static com.cisco.wap.config.ConfigConstant.*;
@@ -26,6 +27,6 @@ public class VoldemortConfig {
     }
 
     public String getBigQueueStorePath() {
-        return bigQueueStorePath;
+        return bigQueueStorePath+ File.separator + this.nodeId;
     }
 }

@@ -6,7 +6,6 @@ import io.grpc.stub.StreamObserver;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class ClientStreamClient {
     public static void main(String[] args) throws InterruptedException {

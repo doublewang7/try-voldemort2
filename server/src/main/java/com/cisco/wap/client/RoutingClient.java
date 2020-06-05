@@ -3,10 +3,8 @@ package com.cisco.wap.client;
 import com.cisco.wap.StoreRequest;
 import com.cisco.wap.StoreResponse;
 import com.cisco.wap.VoldemortServiceGrpc;
-import com.cisco.wap.cache.MapDBManger;
 import io.grpc.ManagedChannel;
 import io.grpc.stub.StreamObserver;
-import org.mapdb.HTreeMap;
 
 import java.util.Collection;
 import java.util.concurrent.CountDownLatch;
