@@ -9,7 +9,7 @@ import static com.cisco.wap.config.ConfigConstant.*;
 public class VoldemortConfig {
     private Properties properties;
     private int nodeId;
-    private int serverPort;
+    private String bigQueueStorePath;
 
     public VoldemortConfig(Properties properties) throws VoldemortConfigError {
         this.properties = properties;
@@ -18,13 +18,14 @@ public class VoldemortConfig {
 
     private void initConfig() throws VoldemortConfigError {
         nodeId = getIntValue(properties, NODE_ID);
+        bigQueueStorePath = getStringValue(properties, BIG_QUEUE_STORE_PATH);
      }
 
     public int getNodeId() {
         return nodeId;
     }
 
-    public int getServerPort() {
-        return serverPort;
+    public String getBigQueueStorePath() {
+        return bigQueueStorePath;
     }
 }

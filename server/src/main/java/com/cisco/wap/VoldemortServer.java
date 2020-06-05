@@ -7,18 +7,17 @@ import com.cisco.wap.exception.VoldemortConfigError;
 import com.cisco.wap.route.ConsistentHashRouter;
 import com.cisco.wap.route.VoldemortNode;
 import com.cisco.wap.server.ServerOptions;
+import com.cisco.wap.server.VoldemortMediator;
 import com.cisco.wap.server.VoldemortServiceImpl;
 import com.google.common.collect.Maps;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
-import org.mapdb.DB;
-import org.mapdb.DBMaker;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -44,16 +43,20 @@ public class VoldemortServer {
                     .map(i -> i.getValue()).collect(Collectors.toList());
             ConsistentHashRouter<VoldemortNode> router = new ConsistentHashRouter<>(allNodes);
 
-            Map<VoldemortNode, ManagedChannel> channels = Maps.newConcurrentMap();
-            voldemortNodes.values().stream().forEach(node -> {
-                ManagedChannel channel = ManagedChannelBuilder.forAddress(node.getAddress(), node.getPort())
-                        .usePlaintext()
-                        .build();
-                channels.put(node, channel);
-            });
+            Map<VoldemortNode, ManagedChannel> channels = initRemoteChannels(voldemortNodes);
+
+            VoldemortMediator mediator = new VoldemortMediator();
+            mediator.setConfig(config);
+            mediator.setChannels(channels);
+            mediator.setRouter(router);
+
+            VoldemortServiceImpl voldemortService = VoldemortServiceImpl.builder()
+                    .mediator(mediator)
+                    .node(self)
+                    .build();
 
             Server server = ServerBuilder.forPort(self.getPort())
-                    .addService(new VoldemortServiceImpl(self, router, channels))
+                    .addService(voldemortService)
                     .build();
             server.start();
             logger.info(String.format("Voldemort Server is started at port %d.", self.getPort()));
@@ -63,6 +66,18 @@ public class VoldemortServer {
         } catch (VoldemortConfigError fe) {
             logger.error("Voldemort Server is stopped, due to: ", fe);
         }
+    }
+
+    @NotNull
+    private static Map<VoldemortNode, ManagedChannel> initRemoteChannels(Map<Integer, VoldemortNode> voldemortNodes) {
+        Map<VoldemortNode, ManagedChannel> channels = Maps.newConcurrentMap();
+        voldemortNodes.values().stream().forEach(node -> {
+            ManagedChannel channel = ManagedChannelBuilder.forAddress(node.getAddress(), node.getPort())
+                    .usePlaintext()
+                    .build();
+            channels.put(node, channel);
+        });
+        return channels;
     }
 
     private static VoldemortNode getPort(int nodeId, Map<Integer, VoldemortNode> voldemortNodes) {

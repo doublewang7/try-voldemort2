@@ -5,11 +5,9 @@ import com.cisco.wap.StoreResponse;
 import com.cisco.wap.Type;
 import com.cisco.wap.cache.MapDBManger;
 import com.cisco.wap.client.RoutingClient;
-import com.cisco.wap.client.RoutingStreamObserver;
 import com.cisco.wap.route.ConsistentHashRouter;
 import com.cisco.wap.route.VoldemortNode;
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import io.grpc.ManagedChannel;
 import io.grpc.stub.StreamObserver;
@@ -21,28 +19,29 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
+
 
 public class PutStreamObserver implements StreamObserver<StoreRequest> {
     private static Logger logger = LoggerFactory.getLogger(PutStreamObserver.class);
     private Multimap<ManagedChannel, StoreRequest> requests;
     private ConsistentHashRouter<VoldemortNode> router;
-    private VoldemortNode selfNode;
     private Map<VoldemortNode, ManagedChannel> channels;
     private StreamObserver<StoreResponse> responseObserver;
+    private VoldemortNode selfNode;
+    private VoldemortMediator facade;
 
-    public PutStreamObserver(ConsistentHashRouter<VoldemortNode> router,
+    public PutStreamObserver(VoldemortMediator facade,
                              VoldemortNode selfNode,
-                             Map<VoldemortNode, ManagedChannel> channels,
                              StreamObserver<StoreResponse> responseObserver) {
         requests = ArrayListMultimap.create();
         this.selfNode = selfNode;
-        this.channels = channels;
-        this.router = router;
         this.responseObserver = responseObserver;
+        this.facade = facade;
+        this.router = facade.getRouter();
+        this.channels = facade.getChannels();
     }
 
     @Override
