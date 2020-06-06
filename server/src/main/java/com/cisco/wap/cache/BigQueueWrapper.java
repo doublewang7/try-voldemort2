@@ -28,6 +28,9 @@ public class BigQueueWrapper implements Closeable {
     }
 
     public <T extends Deferrable> T get(Class<T> cls) {
+        if(innerQueue.isEmpty()) {
+            return null;
+        }
         try {
             byte[] bytes = innerQueue.dequeue();
             T t = cls.newInstance();
@@ -36,6 +39,10 @@ public class BigQueueWrapper implements Closeable {
             logger.error(e.getMessage(), e);
         }
         return null;
+    }
+
+    public boolean isEmpty() {
+        return innerQueue.isEmpty();
     }
 
     @Override

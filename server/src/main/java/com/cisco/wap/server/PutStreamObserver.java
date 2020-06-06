@@ -72,8 +72,7 @@ public class PutStreamObserver implements StreamObserver<StoreRequest> {
         Collection<StoreRequest> storeRequests = requests.get(selfChannel);
         Map<String, List<StoreRequest>> tables = storeRequests.stream().collect(groupingBy(StoreRequest::getTable));
         tables.entrySet().stream().forEach(table -> {
-            TimerTask timerTask = new SumFunction(table.getKey(), table.getValue());
-            BigQueueWrapper queue = BigQueueManger.getInstance(dir, table.getKey(), timerTask);
+            BigQueueWrapper queue = BigQueueManger.getInstance(dir, table.getKey());
             if(Objects.isNull(queue)) {
                 //TODO: some backup solution when deferred queue not ready
             }

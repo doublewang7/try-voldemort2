@@ -2,8 +2,10 @@ package com.cisco.wap.cache;
 
 import com.cisco.wap.utils.codec.Codec;
 import com.cisco.wap.utils.codec.CodecFactory;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -11,6 +13,8 @@ import java.util.Objects;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class DeferredMessage implements Deferrable {
     private static final int KEY_HEAD_LENGTH = 4;
     private static final int VALUE_HEAD_LENGTH = 4;
