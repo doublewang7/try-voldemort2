@@ -68,6 +68,12 @@
             <artifactId>bigqueue</artifactId>
             <version>0.7.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.calcite</groupId>
+            <artifactId>calcite-linq4j</artifactId>
+            <version>1.6.0</version>
+        </dependency>
     </dependencies>
 
     <build>

@@ -1,0 +1,4 @@
+lucy,23,false,ibm
+Andy,21,true,facebook
+Bob,40,true,ibm
+Judy,11,false,facebook

@@ -3,7 +3,6 @@ package com.cisco.wap.server;
 import com.cisco.wap.StoreRequest;
 import com.cisco.wap.StoreResponse;
 import com.cisco.wap.Type;
-import com.cisco.wap.aggregate.SumFunction;
 import com.cisco.wap.cache.BigQueueManger;
 import com.cisco.wap.cache.BigQueueWrapper;
 import com.cisco.wap.cache.DeferredMessage;
@@ -17,7 +16,10 @@ import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import static java.util.stream.Collectors.groupingBy;
 

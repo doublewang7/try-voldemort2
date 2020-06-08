@@ -1,6 +1,5 @@
 package com.cisco.wap.aggregate;
 
-import com.cisco.wap.StoreRequest;
 import com.cisco.wap.cache.BigQueueManger;
 import com.cisco.wap.cache.BigQueueWrapper;
 import com.cisco.wap.cache.DeferredMessage;

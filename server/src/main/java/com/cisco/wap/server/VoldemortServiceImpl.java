@@ -10,10 +10,12 @@ import com.cisco.wap.route.ConsistentHashRouter;
 import com.cisco.wap.route.VoldemortNode;
 import io.grpc.ManagedChannel;
 import io.grpc.stub.StreamObserver;
+import org.apache.calcite.linq4j.Linq4j;
 import org.mapdb.HTreeMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
@@ -35,27 +37,13 @@ public class VoldemortServiceImpl extends VoldemortServiceGrpc.VoldemortServiceI
 
     @Override
     public void get(StoreRequest request, StreamObserver<StoreResponse> responseObserver) {
-//        StoreResponse response = null;
-//        VoldemortNode node = self;
-//        // if the message is routed message, skip look up the target node
-//        if(request.getType() == Type.DIRECT) {
-//            node = router.routeRequest(request.getKey());
-//        }
-//        if(node!=self) {
-//            ManagedChannel remoteChannel = channels.get(node);
-//            response = RoutingClient.get(remoteChannel, request);
-//        } else {
-//            HTreeMap map = MapDBManger.getInstance(request.getTable());
-//            Object value = map.get(request.getKey());
-//            response = StoreResponse.newBuilder()
-//                    .setNodeId(self.getId())
-//                    .setPayload(value.toString())
-//                    .build();
-//        }
         AtomicLong value = new AtomicLong(0);
         ManagedChannel selfChannel = channels.get(self);
         if(request.getType() == Type.DIRECT) {
-            channels.values().parallelStream().filter(i->!selfChannel.equals(i)).forEach(channel -> {
+            List<ManagedChannel> others = Linq4j.asEnumerable(channels.values())
+                    .where(x -> !selfChannel.equals(x))
+                    .toList();
+            others.parallelStream().forEach(channel -> {
                 StoreRequest remoteRequest = StoreRequest.newBuilder()
                         .setType(Type.ROUTED)
                         .setTable(request.getTable())
