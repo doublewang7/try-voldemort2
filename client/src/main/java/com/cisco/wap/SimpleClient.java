@@ -19,7 +19,6 @@ public class SimpleClient {
                 .build();
 
         StoreResponse storeResponse = stub.get(request);
-
         System.out.println(storeResponse.getPayload()+"@"+storeResponse.getNodeId());
     }
 }

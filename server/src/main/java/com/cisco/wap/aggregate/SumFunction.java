@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 
 public class SumFunction extends AggregateFunction {
 
-
     public SumFunction(String dir, String tableName) {
         super(dir, tableName);
     }

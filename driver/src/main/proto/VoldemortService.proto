@@ -1,0 +1,28 @@
+syntax = "proto3";
+option java_multiple_files = true;
+import "google/protobuf/timestamp.proto";
+
+package com.cisco.wap;
+
+enum Type {
+  DIRECT = 0;
+  ROUTED = 1;
+}
+
+message StoreRequest {
+  Type type = 1;
+  string table = 2;
+  string key = 3;
+  string payload = 4;
+}
+
+message StoreResponse {
+  int32 nodeId = 1;
+  string payload = 2;
+}
+
+service VoldemortService {
+  rpc get(StoreRequest) returns (StoreResponse);
+  rpc put(stream StoreRequest) returns (StoreResponse); // client rpc
+  rpc route(stream StoreRequest) returns (StoreResponse); // bi-direction prc
+}

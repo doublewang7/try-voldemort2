@@ -29,6 +29,7 @@ public class BigQueueManger {
             try {
                 wrapper = new BigQueueWrapper(dir, name);
                 queues.put(name, wrapper);
+                //TODO: ExecutorPool
                 TimerTask timerTask = new SumFunction(dir, name);
                 timer.schedule(timerTask, NO_DELAY, ONE_MINUTE);
                 logger.info("the local folder {} is created for defer queue.", dir);

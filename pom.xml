@@ -11,12 +11,14 @@
     <modules>
         <module>server</module>
         <module>client</module>
+        <module>driver</module>
     </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <grpc.version>1.29.0</grpc.version>
     </properties>
 
     <repositories>
@@ -24,9 +26,30 @@
             <id>github.release.repo</id>
             <url>https://raw.github.com/bulldog2011/bulldog-repo/master/repo/releases/</url>
         </repository>
+        <repository>
+            <id>maven</id>
+            <name>default</name>
+            <url>https://repo.maven.apache.org/maven2/</url>
+        </repository>
     </repositories>
 
     <dependencies>
+        <!-- grpc -->
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-netty</artifactId>
+            <version>${grpc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-protobuf</artifactId>
+            <version>${grpc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-stub</artifactId>
+            <version>${grpc.version}</version>
+        </dependency>
         <!-- logback -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
